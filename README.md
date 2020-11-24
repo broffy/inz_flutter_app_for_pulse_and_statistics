@@ -1,16 +1,12 @@
 # flutter_myapp
 
-A new Flutter application.
+Aplikacja do obsługi esp32 BLE przy pomocy flutter
 
-## Getting Started
+TODO:
+-ulepszyc GUI
+-dodac wartosci pomiarowe z z BMP180 (po naprawie servera BLE po stronie urządzenia)
+-dodac charty z osiami czasu pobierające dane z pliku .db
+-dodac mozliwosc wyboru uzytkownika z ktorego beda czytane dane z bd
+-dodac mozliwosc pobrania pliku .db z karty pamieci podlaczonej do esp32
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
