@@ -25,6 +25,8 @@ class _SensorPageState extends State<SensorPage> {
   Stream<List<int>>  stream;
   List<double> traceOxy = List();
   List<double> traceBpm = List();
+  List<double> traceTemp = List();
+  List<double> tracePressure = List();
 
   @override
   initState(){
@@ -157,6 +159,21 @@ class _SensorPageState extends State<SensorPage> {
 
     );
 
+    DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          bottom: TabBar(
+            tabs: [
+              Tab(icon: Icon(Icons.directions_car)),
+              Tab(icon: Icon(Icons.directions_transit)),
+              Tab(icon: Icon(Icons.directions_bike)),
+            ],
+          ),
+        ),
+      ),
+    );
+
     return WillPopScope(
       onWillPop: _onWillPop ,
       child: Scaffold(
@@ -184,13 +201,32 @@ class _SensorPageState extends State<SensorPage> {
                 var currentValue = _dataParser(snapshot.data);
                 var oxyAvg = currentValue.split(",")[0];
                 var bpmAvg = currentValue.split(",")[1];
+                var tempAvg = currentValue.split(",")[2];
+                var pressureAvg = currentValue.split(",")[3];
                 traceOxy.add(double.tryParse(oxyAvg) ?? 0);
                 traceBpm.add(double.tryParse(bpmAvg) ?? 0);
+                traceTemp.add(double.tryParse(tempAvg) ?? 0);
+                tracePressure.add(double.tryParse(pressureAvg) ?? 0);
 
                 return Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text('Temp                           Pressure',
+                                    style: TextStyle(fontSize: 14)),
+                                Text('  ${tempAvg} °C              ${pressureAvg} hPa',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 24))
+
+
+                              ]),
+                        ),
                         Expanded(
                           flex: 1,
                           child: Column(
@@ -202,6 +238,7 @@ class _SensorPageState extends State<SensorPage> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 24))
+
                               ]),
                         ),
 
