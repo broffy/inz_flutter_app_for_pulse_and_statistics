@@ -28,7 +28,7 @@ class _SensorPageState extends State<SensorPage> {
   List<double> traceTemp = List();
   List<double> tracePressure = List();
   List<double> traceIrVal = List();
-  List<double> traceSpo2 = List();
+  List<double> traceRefresh = List();
 
   @override
   initState(){
@@ -206,13 +206,13 @@ class _SensorPageState extends State<SensorPage> {
                 var tempAvg = currentValue.split(",")[2];
                 var pressureAvg = currentValue.split(",")[3];
                 //var irVal = currentValue.split(",")[4];
-                var Spo2 = currentValue.split(",")[4];
+                var refresh = currentValue.split(",")[4];
                 traceOxy.add(double.tryParse(oxyAvg) ?? 0);
                 traceBpm.add(double.tryParse(bpmAvg) ?? 0);
                 traceTemp.add(double.tryParse(tempAvg) ?? 0);
                 tracePressure.add(double.tryParse(pressureAvg) ?? 0);
                // traceIrVal.add(double.tryParse(irVal) ?? 0);
-                traceSpo2.add(double.tryParse(Spo2) ?? 0);
+                traceRefresh.add(double.tryParse(refresh) ?? 0);
 
                 return Center(
                     child: Column(
@@ -241,8 +241,10 @@ class _SensorPageState extends State<SensorPage> {
                                 Text('Spo2',
                                     style: TextStyle(fontSize: 14)),
                                 //chrysre dopomóż mnie bo zgrzeszyłem
-                                Text('${Spo2}',
-                                    style: TextStyle(color: Colors.white,fontSize: 14)),
+                                Text('${refresh}',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 5)),
                                 //chrysre dopomóż mnie bo zgrzeszyłem
                                 Text('  ${oxyAvg} %',
                                     style: TextStyle(
