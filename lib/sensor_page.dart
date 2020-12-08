@@ -3,6 +3,7 @@ import 'dart:convert' show utf8;
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:oscilloscope/oscilloscope.dart';
+import 'package:flutter_myapp/screen/login_screen.dart';
 
 
 
@@ -29,6 +30,19 @@ class _SensorPageState extends State<SensorPage> {
   List<double> tracePressure = List();
   List<double> traceIrVal = List();
   List<double> traceRefresh = List();
+
+
+  gotoSecondActivity(BuildContext context){
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+
+  }
+
+
+
 
   @override
   initState(){
@@ -220,9 +234,22 @@ class _SensorPageState extends State<SensorPage> {
                       children: <Widget>[
                         Expanded(
                           flex: 1,
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Image.asset('assets/images/temperature_icon.ico'),
+                                //Image.asset('assets/images/temperature_icon.ico'),
+                                Image.asset('assets/images/pressure2.png')
+
+                              ]),
+                        ),
+                        Expanded(
+                          flex: 1,
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
+                                //Image.asset('assets/images/temperature_icon.ico'),
+                                //Image.asset('assets/images/atmospheric_pressure.png'),
                                 Text('Temp                           Pressure',
                                     style: TextStyle(fontSize: 14)),
                                 Text('  ${tempAvg} °C              ${pressureAvg} hPa',
@@ -275,6 +302,16 @@ class _SensorPageState extends State<SensorPage> {
                         Expanded(
                           flex: 3,
                           child: oscilloscope_bpm,
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: RaisedButton(
+                          child: Text('Logowanie'),
+                          color: Colors.green,
+                          textColor: Colors.white,
+                          onPressed: () {
+                            gotoSecondActivity(context);
+                          }),
                         )
                       ],
                     ));
@@ -289,7 +326,55 @@ class _SensorPageState extends State<SensorPage> {
   }
 }
 
+class SecondScreen extends StatelessWidget {
 
+  goBackToPreviousScreen(BuildContext context){
+
+    Navigator.pop(context);
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Logowanie"),
+      ),
+      body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                flex: 9,
+                child: Column(
+
+
+
+                    ),
+              ),
+
+              Expanded(
+                flex: 1,
+
+                child: RaisedButton(
+
+                  onPressed: () {goBackToPreviousScreen(context);},
+                  color: Colors.lightBlue,
+                  textColor: Colors.white,
+                  child: Text('Wroć do pomiarów irt'),
+                ),
+              ),
+            ],
+          )
+
+
+
+
+
+        ),
+      );
+  }
+}
 
 
 
