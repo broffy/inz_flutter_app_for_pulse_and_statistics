@@ -1,11 +1,11 @@
 import 'dart:async';
+
+
 import 'dart:convert' show utf8;
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:oscilloscope/oscilloscope.dart';
 import 'package:flutter_myapp/screen/login_screen.dart';
-
-
 
 
 class SensorPage extends StatefulWidget {
@@ -22,6 +22,8 @@ class _SensorPageState extends State<SensorPage> {
 
   final String SERVICE_UUID = "4fafc201-1fb5-459e-8fcc-c5c9c331914b";
   final String CHARACTERISTIC_UUID = "beb5483e-36e1-4688-b7f5-ea07361b26a8";
+  //final String SERVICE_UUID = "0xDEAD";
+  //final String CHARACTERISTIC_UUID = "0xBEEF";
   bool isReady;
   Stream<List<int>>  stream;
   List<double> traceOxy = List();
@@ -36,7 +38,7 @@ class _SensorPageState extends State<SensorPage> {
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
+      MaterialPageRoute(builder:  (context) => LoginPage()),
     );
 
   }
@@ -156,7 +158,7 @@ class _SensorPageState extends State<SensorPage> {
     Oscilloscope oscilloscope_oxy = Oscilloscope(
       showYAxis: true,
       padding: 0.0,
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       traceColor: Colors.lightBlueAccent,
       yAxisMax: 100.0,
       yAxisMin: 0.0,
@@ -164,10 +166,11 @@ class _SensorPageState extends State<SensorPage> {
 
     );
 
+
     Oscilloscope oscilloscope_bpm = Oscilloscope(
       showYAxis: true,
       padding: 0.0,
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       traceColor: Colors.redAccent,
       yAxisMax: 100.0,
       yAxisMin: 0.0,
@@ -209,40 +212,37 @@ class _SensorPageState extends State<SensorPage> {
             stream: stream,
             builder: (BuildContext context,
                 AsyncSnapshot<List<int>> snapshot) {
-              if(snapshot.hasError)
-                return Text('Error: ${snapshot.error}');
+              if(snapshot.hasError){
+                //var currentValue = _dataParser(snapshot.data);
+                //print("Dane z sensora");
+                //print(currentValue);
+                return Text('Wartosc z sensora: ${snapshot.error}');
+
+              }
 
               if(snapshot.connectionState==
                   ConnectionState.active){
+                print("Dane z sensora");
+
                 var currentValue = _dataParser(snapshot.data);
                 var oxyAvg = currentValue.split(",")[0];
                 var bpmAvg = currentValue.split(",")[1];
                 var tempAvg = currentValue.split(",")[2];
                 var pressureAvg = currentValue.split(",")[3];
-                //var irVal = currentValue.split(",")[4];
                 var refresh = currentValue.split(",")[4];
+
                 traceOxy.add(double.tryParse(oxyAvg) ?? 0);
-                traceBpm.add(double.tryParse(bpmAvg) ?? 0);
+                traceBpm.add((double.tryParse(bpmAvg)) ?? 0);
                 traceTemp.add(double.tryParse(tempAvg) ?? 0);
                 tracePressure.add(double.tryParse(pressureAvg) ?? 0);
-               // traceIrVal.add(double.tryParse(irVal) ?? 0);
                 traceRefresh.add(double.tryParse(refresh) ?? 0);
 
+                print(currentValue);
                 return Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Expanded(
-                          flex: 1,
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                Image.asset('assets/images/temperature_icon.ico'),
-                                //Image.asset('assets/images/temperature_icon.ico'),
-                                Image.asset('assets/images/pressure2.png')
 
-                              ]),
-                        ),
                         Expanded(
                           flex: 1,
                           child: Column(
@@ -283,8 +283,11 @@ class _SensorPageState extends State<SensorPage> {
 
                         Expanded(
                           flex: 3,
-                          child: oscilloscope_oxy,
-
+                          child: Container(
+                            color: Colors.amber,
+                            width: 330,
+                            child: oscilloscope_oxy,
+                          ),
                         ),
                         Expanded(
                           flex: 1,
@@ -299,19 +302,35 @@ class _SensorPageState extends State<SensorPage> {
                                         fontSize: 24))
                               ]),
                         ),
+
                         Expanded(
                           flex: 3,
-                          child: oscilloscope_bpm,
+                          child: Container(
+                            color: Colors.amber,
+                            width: 330,
+                            child: oscilloscope_bpm,
+                          ),
+
+
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: RaisedButton(
-                          child: Text('Logowanie'),
-                          color: Colors.green,
-                          textColor: Colors.white,
-                          onPressed: () {
-                            gotoSecondActivity(context);
-                          }),
+                        Row /*or Column*/(
+
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            RaisedButton(
+                            child: Text('Dane'),
+                            color: Colors.green,
+                            textColor: Colors.white,
+                            onPressed: () {
+                              gotoSecondActivity(context);
+                            }),
+                            RaisedButton(
+                                child: Text('Sync'),
+                                color: Colors.green,
+                                textColor: Colors.white,
+                                )
+
+                          ],
                         )
                       ],
                     ));

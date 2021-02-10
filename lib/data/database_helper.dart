@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 import 'dart:async';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:flutter_myapp/models/oneShot.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = new DatabaseHelper.internal();
@@ -40,4 +41,58 @@ class DatabaseHelper {
     var ourDb = await openDatabase(path);
     return ourDb;
   }
+  Future<List<oneShot>> readRows() async {
+    DatabaseHelper con = new DatabaseHelper();
+    var db = await con.db;
+    List<Map<String, dynamic>> maps = await db.rawQuery(
+        '''SELECT * FROM oneShot''');
+    return List.generate(maps.length, (i) {
+      return oneShot(
+          id: maps[i]['id'],
+          username: maps[i]['username'],
+          pulse: maps[i]['pulse'],
+          spo2: maps[i]['spo2'],
+          temp: maps[i]['temp'],
+          pres: maps[i]['pres'],
+          timestamp: maps[i]['timestamp']
+      );
+    });
+  }
+  Future<List<oneShot>> read_last100_records() async {
+    DatabaseHelper con = new DatabaseHelper();
+    var db = await con.db;
+    List<Map<String, dynamic>> maps =
+    await db.rawQuery('''SELECT *
+FROM
+(
+    SELECT *
+    FROM oneShot
+    ORDER BY id DESC
+    LIMIT 100
+) t
+ORDER BY t.id''');
+    return List.generate(maps.length, (i) {
+      return oneShot(
+          id: maps[i]['id'],
+          username: maps[i]['username'],
+          pulse: maps[i]['pulse'],
+          spo2: maps[i]['spo2'],
+          temp: maps[i]['temp'],
+          pres: maps[i]['pres'],
+          timestamp: maps[i]['timestamp']);
+    });
+  }
+  /*
+   readMap() async {
+    // Get a reference to the database.
+    DatabaseHelper con = new DatabaseHelper();
+    var db = await con.db;
+    // Query the table for all The records.
+    List<Map<String, dynamic>> maps = await db.rawQuery(
+        '''SELECT * FROM oneShot''');
+    //return await db.rawQuery('''SELECT * FROM $table WHERE $columnDate BETWEEN '$twoDaysAgo' AND '$today''');
+    // Convert the List<Map<String, dynamic> into a List<Dog>.
+    return maps;
+  }
+  */
 }

@@ -19,9 +19,10 @@ class LoginCtr {
     return res;
   }
 
-  Future<User> getLogin(String user, String password) async {
+  Future<User> getLogin(String user) async {
     var dbClient = await con.db;
-    var res = await dbClient.rawQuery(" SELECT * FROM user WHERE username='$user' AND password='$password' ");
+    var res = await dbClient.rawQuery(
+        ''' SELECT * FROM users WHERE screenName='$user' ''');
 
     if (res.length > 0) {
       return new User.fromMap(res.first);

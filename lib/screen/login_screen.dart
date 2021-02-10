@@ -77,7 +77,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
         _ctx = context;
         var loginBtn = new RaisedButton(
           onPressed: _submit,
-          child: new Text("Login"),
+          child: new Text("Zaloguj się"),
           color: Colors.green,
         );
         var loginForm = new Column(
@@ -91,16 +91,9 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
                     padding: const EdgeInsets.all(10.0),
                     child: new TextFormField(
                       onSaved: (val) => _username = val,
-                      decoration: new InputDecoration(labelText: "Username"),
+                      decoration: new InputDecoration(labelText: "Nazwa użytkownika"),
                     ),
                   ),
-                  new Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: new TextFormField(
-                      onSaved: (val) => _password = val,
-                      decoration: new InputDecoration(labelText: "Password"),
-                    ),
-                  )
                 ],
               ),
             ),
@@ -110,7 +103,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
 
         return new Scaffold(
           appBar: new AppBar(
-            title: new Text("Login Page"),
+            title: new Text("Ekran logowania"),
           ),
           key: scaffoldKey,
           body: new Container(
@@ -136,6 +129,10 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
     });
   }
 
+  String returnUser(){
+    return _username;
+  }
+
   @override
   void onLoginError(String error) {
     _showSnackBar(error);
@@ -151,7 +148,7 @@ class _LoginPageState extends State<LoginPage> implements LoginCallBack {
       savePref(1,user.username, user.password);
       _loginStatus = LoginStatus.signIn;
     }else{
-      _showSnackBar("Failed to log in");
+      _showSnackBar("Błędna nazwa użytkownika");
       setState(() {
         _isLoading = false;
       });

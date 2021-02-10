@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:flutter_myapp/widgets.dart';
 import 'package:flutter_myapp/sensor_page.dart';
+import 'package:flutter_myapp/screen/login_screen.dart';
 
 void main() {
   runApp(FlutterBlueApp());
@@ -71,7 +72,7 @@ class FindDevicesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Find Devices'),
+        title: Text('Znajdź pulsoksymetr'),
       ),
       body: RefreshIndicator(
         onRefresh: () =>
@@ -127,6 +128,15 @@ class FindDevicesScreen extends StatelessWidget {
                       .toList(),
                 ),
               ),
+
+              RaisedButton(
+                  child: Text('Dane archiwalne'),
+                  color: Colors.green,
+                  textColor: Colors.white,
+                  onPressed: () {
+                    gotoSecondActivity(context);
+                  }
+                  ),
             ],
           ),
         ),
@@ -143,14 +153,25 @@ class FindDevicesScreen extends StatelessWidget {
             );
           } else {
             return FloatingActionButton(
+
                 child: Icon(Icons.search),
                 onPressed: () => FlutterBlue.instance
-                    .startScan(timeout: Duration(seconds: 4)));
+                    .startScan(timeout: Duration(seconds: 4))
+            );
           }
         },
       ),
+
     );
   }
+}
+gotoSecondActivity(BuildContext context){
+
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder:  (context) => LoginPage()),
+  );
+
 }
 
 class DeviceScreen extends StatelessWidget {

@@ -7,7 +7,7 @@ class User {
 
   User.fromMap(dynamic obj) {
     this._username = obj['username'];
-    this._password = obj['password'];
+    this._username = obj['password'];
   }
 
   String get username => _username;
